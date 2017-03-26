@@ -4,6 +4,19 @@ Copyright 2017, Sjors van Gelderen
 
 module ASM
 
+type Operand =
+    | Accumulator
+    //| Implied
+    | Immediate of byte
+    | Relative  of byte
+    | Absolute  of int16
+    | ZeroPage  of byte
+    | Indirect  of byte * int16
+    | AbsoluteIndexed  of byte * Register
+    | ZeroPagedIndexed of byte * Register
+    | DirectIndexed    of byte * Register
+    | IndirectIndexed
+
 type Instruction =
     | ADC
     | AND
@@ -32,11 +45,11 @@ type Instruction =
     | INC
     | INX
     | INY
-    | JMP of int16
+    | JMP
     | JSR
-    | LDA
-    | LDY
-    | LDY
+    | LDA of Operand
+    | LDX of Operand
+    | LDY of Operand
     | LSR
     | NOP
     | ORA
@@ -52,9 +65,9 @@ type Instruction =
     | SEC
     | SED
     | SEI
-    | STA
-    | STX
-    | STY
+    | STA of Operand
+    | STX of Operand
+    | STY of Operand
     | TAX
     | TAY
     | TSX
@@ -62,4 +75,8 @@ type Instruction =
     | TXS
     | TYA
 
-type AST = Mystery
+let ast =
+    [
+        LDX (Immediate (0xFF))
+        STX (Absolute (0x0000))
+    ]
