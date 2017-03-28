@@ -19,11 +19,6 @@ let status_mask_interrupt  = 0b00000100
 let status_mask_zero       = 0b00000010
 let status_mask_carry      = 0b00000001
 
-type Register =
-    | A
-    | X
-    | Y
-
 type CPU =
     {
         A:  byte  // Accumulator Register
@@ -36,28 +31,28 @@ type CPU =
 
 let cpu_zero =
     {
-        A  = 0
-        X  = 0
-        Y  = 0
-        SP = 0
-        PC = 0
-        SR = 0
+        A  = byte 0
+        X  = byte 0
+        Y  = byte 0
+        SP = byte 0
+        PC = int16 0
+        SR = byte 0
     }
 
-let cpu_increase_pc cpu = { cpu with PC = PC + 1 }
+let cpu_increase_pc cpu = { cpu with PC = cpu.PC + int16 1 }
 
-let cpu_set_register (r: Register) (o: Operand) =
+let cpu_set_register (r: Register) (o: Operand) (cpu: CPU) =
     let value =
         match o with
         | Immediate value -> value
-        | _ -> -1 // ERROR
+        | _ -> byte -1 // ERROR
     
     match r with
-    | A -> { cpu' with A = value }
-    | X -> { cpu' with X = value }
-    | Y -> { cpu' with Y = value }
+    | A -> { cpu with A = value }
+    | X -> { cpu with X = value }
+    | Y -> { cpu with Y = value }
 
-let process_instruction (cpu: CPU) (mem: MEM) (i: Instruction) =
+let process_instruction (mem: MEM) (i: Instruction) (cpu: CPU) =
     match i with
     (*
     | ADC -> cpu, mem
@@ -91,8 +86,8 @@ let process_instruction (cpu: CPU) (mem: MEM) (i: Instruction) =
     | JSR -> cpu, mem
     | LDA operand -> cpu_set_register A operand, mem
     *)
-    | LDX operand -> cpu_increase_pc cpu_set_register X operand, mem
-    | LDY operand -> cpu_increase_pc cpu_set_register Y operand, mem
+    | LDX operand -> cpu, mem //cpu |> cpu_increase_pc >> cpu_set_register X operand, mem
+    | LDY operand -> cpu, mem // cpu |> cpu_increase_pc >> cpu_set_register Y operand, mem
     (*
     | LSR -> cpu, mem
     | NOP -> cpu, mem
@@ -111,8 +106,8 @@ let process_instruction (cpu: CPU) (mem: MEM) (i: Instruction) =
     | SEI -> cpu, mem
     | STA -> cpu, mem
     *)
-    | STX operand -> cpu_increase_pc cpu, memory_set operand cpu.X
-    | STY operand -> cpu_increase_pc cpu, memory_set operand cpu.Y
+    | STX operand -> cpu, mem //cpu_increase_pc cpu, mem_set operand cpu.X
+    | STY operand -> cpu, mem //cpu_increase_pc cpu, mem_set operand cpu.Y
     (*
     | TAX -> { cpu with X = A }, mem
     | TAY -> { cpu with Y = A }, mem
@@ -122,5 +117,5 @@ let process_instruction (cpu: CPU) (mem: MEM) (i: Instruction) =
     | TYA -> { cpu with A = Y }, mem
     *)
     | _ ->
-        printfn "Error, unrecognized instruction: %A" instruction
+        printfn "Error, unrecognized instruction: %A" i
         cpu, mem

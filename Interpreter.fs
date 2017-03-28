@@ -8,6 +8,7 @@ open ASM
 open CPU
 open MEM
 
+(*
 type Step = AST -> CPU -> MEM -> Result
 and Result =
     | Busy of AST * CPU * MEM
@@ -26,3 +27,4 @@ type InterpreterMonad() =
     member this.Bind(p, k) = p >>= k
     member this.Return x = fun (ast: AST) (cpu: CPU) (mem: MEM) -> x
 let interpreter = InterpreterMonad()
+*)

@@ -9,7 +9,6 @@ type Register =
     | X
     | Y
 
-(*
 type Accumulator = Unit
 type Implied = Unit
 type Immediate = byte
@@ -23,6 +22,24 @@ type Indirect = byte * int16
 type IndirectIndexed = byte * Register
 type Label = string
 
+(*
+Old union
+type Operator =
+    | Accumulator
+    | Implied
+    | Immediate of byte
+    | Relative of byte // Not used? 
+    | Absolute of int16
+    | ZeroPage of byte
+    | AbsoluteIndexed of byte * Register
+    | ZeroPagedIndexed of byte * Register
+    | DirectIndexed of byte * Register
+    | Indirect of byte * int16
+    | IndirectIndexed of byte * Register
+    | Label of string
+*)
+
+(*
 type Operator =
     | Accumulator
     | Implied
@@ -37,20 +54,6 @@ type Operator =
     | IndirectIndexed
     | Label
 *)
-
-type Operator =
-    | Accumulator
-    | Implied
-    | Immediate of byte
-    | Relative of byte // Not used? 
-    | Absolute of int16
-    | ZeroPage of byte
-    | AbsoluteIndexed of byte * Register
-    | ZeroPagedIndexed of byte * Register
-    | DirectIndexed of byte * Register
-    | Indirect of byte * int16
-    | IndirectIndexed of byte * Register
-    | Label of string
 
 type Instruction =
     | ADC of Immediate | ZeroPage | ZeroPageIndexed | Absolute | AbsoluteIndexed | IndirectIndexed

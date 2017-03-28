@@ -1,0 +1,5 @@
+/Users/sjors/Projects/NES/bin/Debug/NES.exe
+/Users/sjors/Projects/NES/bin/Debug/NES.exe.mdb
+/Users/sjors/Projects/NES/obj/x86/Debug/NES.exe
+/Users/sjors/Projects/NES/obj/x86/Debug/NES.exe.mdb
+/Users/sjors/Projects/NES/obj/x86/Debug/NES.fsprojResolveAssemblyReference.cache

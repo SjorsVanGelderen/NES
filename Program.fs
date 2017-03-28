@@ -6,7 +6,10 @@ module Program
 
 open CPU
 
+let version = 1
+
+[<EntryPoint>]
 let main args =
-    let state = State.Zero
-    
+    printfn "NES simulator version %A" version
+
     0

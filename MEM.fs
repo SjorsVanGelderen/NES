@@ -6,7 +6,7 @@ module MEM
 
 open ASM
 
-type MEM = byte Array
+type MEM = byte List
 
 let mem_zero = [ for i in 0..64 -> 0 ]
 
@@ -14,17 +14,17 @@ let mem_get (mem: MEM) (address: Operand) =
     let index =
         match address with
         | Absolute address -> address
-        | _ -> -1 // ERROR
-    List.nth mem index
+        | _ -> int16 -1 // ERROR
+    mem.[int index]
 
 let mem_set (mem: MEM) (address: Operand) (value: byte) =
     let index =
         match address with
         | Absolute address -> address
-        | _ -> -1 // ERROR
+        | _ -> int16 -1 // ERROR
     
-    List.fold (fun (acc, i), elem ->
+    List.fold (fun (i, acc) elem ->
         if i = index then
-            value :: acc
+            (i, value :: acc)
         else
-            elem :: acc) [] mem
+            (i + int16 1, elem :: acc)) (int16 0, []) mem
